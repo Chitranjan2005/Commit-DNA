@@ -1,69 +1,105 @@
-# 🚀Intelligent Version Control System
+# 🧬 Commit DNA – Developer Coding Style Analyzer
 
-It is a lightweight, AI-enhanced Version Control System designed to simplify code tracking, visualization, and recovery. It combines core version control capabilities with intelligent automation and interactive visual tools to improve developer productivity.
+> Analyze Git history and generate a behavioral “Coding DNA Profile” of developers.
 
----
-
-## 📌 Overview
-
-Traditional version control systems rely heavily on command-line logs and manual commit management. This enhances this experience by introducing:
-
-- 🤖 AI-powered commit intelligence
-- 🌳 Interactive visual commit graph
-- ⏳ Smart time-travel recovery system
-
-Our goal is to make version control smarter, more intuitive, and easier to understand — especially for students and developers.
+Commit DNA transforms raw Git commit history into a powerful analytics dashboard that reveals coding patterns, productivity trends, refactoring behavior, bug tendencies, ownership distribution, and burnout indicators.
 
 ---
 
-## ✨ Key Features
+## 🚀 Project Vision
 
-### 1️⃣ AI Commit Intelligence
-Automatically analyzes file changes and generates meaningful, structured commit messages.
+Software teams generate massive Git data every day.  
+Commit DNA converts that raw data into meaningful insights like:
 
-**Capabilities:**
-- Detects type of change (feature, bug fix, refactor, documentation)
-- Generates semantic commit messages
-- Summarizes multi-file updates
-- Encourages standardized commit formatting
-
----
-
-### 2️⃣ Interactive Visual Commit Graph
-A dynamic graphical representation of branches and commit history.
-
-**Capabilities:**
-- Visual branch and merge tracking
-- Clickable commit nodes
-- Hover-based metadata preview
-- Color-coded branch visualization
-- Zoomable timeline navigation
-
-This makes project evolution easy to understand at a glance.
+- 👨‍💻 Developer work patterns  
+- 📊 Commit activity trends  
+- 🐛 Bug introduction patterns  
+- 🔁 Refactor frequency  
+- 🗺 Code ownership heatmap  
+- 🔥 Burnout risk indicator  
 
 ---
 
-### 3️⃣ Smart Time-Travel Recovery
-Restore any previous project state instantly.
+## 🎯 MVP Scope (Phase 1)
 
-**Capabilities:**
-- Rollback to any commit
-- Side-by-side file comparison
-- Selective file restoration
-- Commit-based restoration by ID or timestamp
+This version supports:
 
-Allows safe experimentation without fear of losing progress.
+- ✅ Public GitHub repositories only  
+- ✅ Repository link input  
+- ✅ Automatic repo cloning  
+- ✅ Commit analysis engine  
+- ✅ Developer DNA dashboard  
+
+Private repository support will be added in Phase 2 using GitHub OAuth.
 
 ---
 
-## 🛠 Core Commands
+## 🧠 How It Works
 
-```bash
-vcs init        # Initialize repository
-vcs add         # Stage files
-vcs commit      # Create snapshot
-vcs log         # View commit history
-vcs checkout    # Switch versions
-vcs branch      # Create new branch
-vcs push        # Sync to remote
-vcs pull        # Fetch from remote
+### 1️⃣ User Inputs Public Repository Link
+
+Example: https://github.com/username/repository-name
+
+### 2️⃣ Backend Performs
+
+- Clone repository
+- Extract commit logs
+- Parse commit metadata
+- Calculate behavioral metrics
+- Generate structured analytics
+
+### 3️⃣ Frontend Displays
+
+- Developer Profile Card
+- Commit Activity Graph
+- Bug & Refactor Trends
+- Code Ownership Map
+- Burnout Indicator
+
+---
+
+## 📊 Key Metrics Calculated
+
+### 🕒 Work Pattern
+- Commits per hour
+- Weekend activity
+- Night coding ratio
+
+### 🐛 Bug Rate
+- Bug-fix commit ratio
+- Fix frequency trend
+
+### 🔁 Refactor Frequency
+- Refactor commit ratio
+- Structural change detection
+
+### 📈 Commit Size Analysis
+- Average lines per commit
+- Risk assessment
+
+### 🔥 Burnout Score
+Based on:
+- Late night commits
+- Weekend commits
+- Activity spikes
+- Bug increase
+
+---
+
+## 🏗 Tech Stack
+
+### 🔹 Frontend
+- React (Vite)
+- Tailwind CSS
+- Recharts / D3.js
+
+### 🔹 Backend
+- Node.js
+- Express.js
+- simple-git
+
+### 🔹 Database (Optional in MVP)
+- PostgreSQL / MongoDB
+
+---
+
