@@ -98,7 +98,7 @@ Based on:
 - Express.js
 - simple-git
 
-### 🔹 Database (Optional in MVP)
+### 🔹 Database
 - PostgreSQL / MongoDB
 
 ---
