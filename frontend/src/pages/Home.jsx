@@ -12,10 +12,6 @@ function Home() {
   const handleAnalyze = () => {
     navigate("/result");
   };
-
-  useEffect(() => {
-    // your mouse effect code
-  }, []);
   
   useEffect(() => {
     const handleMouseMove = (e) => {
