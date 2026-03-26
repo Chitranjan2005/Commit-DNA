@@ -1,11 +1,6 @@
 
 import { useEffect, useState } from "react"; 
 import { useNavigate } from "react-router-dom"; 
-
-
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "./Home.css"; // Ensure this file exists in src/pages/
@@ -18,10 +13,12 @@ function Home() {
   const navigate = useNavigate();
 
 
-   const navigate = useNavigate();
-
   const handleAnalyze = () => {
     navigate("/result");
+  };
+  
+  const dashborad = () => {
+    navigate("/dashboard/dashsord")
   };
   
 
@@ -37,43 +34,43 @@ function Home() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-const handleAnalyze = async () => {
-  if (!repoUrl) return alert("Please enter a GitHub URL");
-  setLoading(true);
+// const handleAnalyze = async () => {
+//   if (!repoUrl) return alert("Please enter a GitHub URL");
+//   setLoading(true);
 
-  try {
-    console.log("Sending request to backend...");
+//   try {
+//     console.log("Sending request to backend...");
     
-    const response = await fetch("http://localhost:5000/api/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ repoUrl }),
-    });
+//     const response = await fetch("http://localhost:5000/api/analyze", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ repoUrl }),
+//     });
 
-    console.log("Response status:", response.status);
+//     console.log("Response status:", response.status);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Server Error: ${errorText}`);
-    }
+//     if (!response.ok) {
+//       const errorText = await response.text();
+//       throw new Error(`Server Error: ${errorText}`);
+//     }
 
-    const data = await response.json();
-    console.log("Data received successfully:", data);
+//     const data = await response.json();
+//     console.log("Data received successfully:", data);
 
-    // Navigate only if data exists
-    if (data && Object.keys(data).length > 0) {
-      navigate("/dashboard", { state: { result: data } });
-    } else {
-      alert("Backend returned empty data.");
-    }
+//     // Navigate only if data exists
+//     if (data && Object.keys(data).length > 0) {
+//       navigate("/dashboard", { state: { result: data } });
+//     } else {
+//       alert("Backend returned empty data.");
+//     }
 
-  } catch (error) {
-    console.error("FULL_ERROR_DETAILS:", error);
-    alert(`Connection failed: ${error.message}`);
-  } finally {
-    setLoading(false);
-  }
-};
+//   } catch (error) {
+//     console.error("FULL_ERROR_DETAILS:", error);
+//     alert(`Connection failed: ${error.message}`);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
 
   return (
     <div className="page-wrapper">
@@ -86,19 +83,19 @@ const handleAnalyze = async () => {
           
           <div className="repo-input">
 
-            <input 
+            {/* <input 
               type="text" 
               placeholder="Enter GitHub Repository URL" 
               value={repoUrl}
               onChange={(e) => setRepoUrl(e.target.value)} 
-            />
-            <button 
+            /> */}
+            {/* <button 
               className="analyze-btn" 
               onClick={handleAnalyze} 
               disabled={loading}
             >
               {loading ? "DECODING DNA..." : "Analyze Repository"}
-            </button>
+            </button> */}
 
             <input type="text" placeholder="Enter GitHub Repository URL" />
             <button className="analyze-btn" onClick={handleAnalyze}>
