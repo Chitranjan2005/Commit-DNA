@@ -21,36 +21,42 @@ function Home() {
   }, []);
 
   const handleAnalyze = async () => {
-    if (!repoUrl) return alert("Please enter a GitHub URL");
-    setLoading(true);
+  if (!repoUrl) return alert("Please enter a GitHub URL");
+  setLoading(true);
 
-    try {
-      const response = await fetch("http://localhost:5000/api/analyze", {
+  try {
+    const [analyzeRes, burnoutRes] = await Promise.all([
+      fetch("http://localhost:5000/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ repoUrl }),
-      });
+      }),
+      fetch("http://localhost:5000/api/burnout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ repoUrl }),
+      }),
+    ]);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Server Error: ${errorText}`);
-      }
+    if (!analyzeRes.ok) throw new Error(await analyzeRes.text());
 
-      const data = await response.json();
+    const analyzeData = await analyzeRes.json();
+    const burnoutData = burnoutRes.ok ? await burnoutRes.json() : {};
 
-      if (data && Object.keys(data).length > 0) {
-        // ✅ Pass data to result page via navigation state
-        navigate("/result", { state: { result: data } });
-      } else {
-        alert("Backend returned empty data.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert(`Connection failed: ${error.message}`);
-    } finally {
-      setLoading(false);
+    const merged = { ...analyzeData, ...burnoutData };
+
+    if (Object.keys(merged).length > 0) {
+      navigate("/result", { state: { result: merged } });
+    } else {
+      alert("Backend returned empty data.");
     }
-  };
+  } catch (error) {
+    console.error("Error:", error);
+    alert(`Connection failed: ${error.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="page-wrapper">
