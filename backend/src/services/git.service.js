@@ -22,7 +22,20 @@ exports.cloneRepo = async (repoUrl) => {
   const git = simpleGit();
 
   try {
-    await git.clone(repoUrl, repoPath, ["--depth", "5000"]);
+    const env = {
+        ...process.env,
+        GIT_TERMINAL_PROMPT: '0',
+        GCM_INTERACTIVE: 'false',
+        GIT_ASKPASS: 'echo'
+    };
+    
+    await git.env(env).clone(repoUrl, repoPath, [
+        "--bare",
+        "--depth", "5000",
+        "--filter=blob:none",
+        "-c", "core.askPass=echo",
+        "-c", "credential.helper="
+    ]);
     return repoPath;
   } catch (error) {
     throw new Error("Failed to clone repository. It may be private or invalid.");

@@ -1,20 +1,6 @@
 import React, { useRef, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './result.css';
-
-// ── Sample Data (replace with real API data later) ──
-const devData = {
-  developerName: "V8V88V8V88",
-  totalCommits: 15,
-  nightRatio: 0.2,
-  weekendRatio: 0.4666666666666667,
-  bugRate: 0.13333333333333333,
-  refactorRate: 0.13333333333333333,
-  commitSpike: 0.6666666666666667,
-  // existing fields
-  primaryLanguage: "Javascript",
-  focusArea: "UI/UX",
-  codeVelocity: "High",
-};
 
 // ── Speedometer Component ──
 const Speedometer = ({ value, max = 1, label }) => {
@@ -36,7 +22,6 @@ const Speedometer = ({ value, max = 1, label }) => {
     const endAngle = 2 * Math.PI;
     const totalAngle = endAngle - startAngle;
 
-    // Background arc
     ctx.beginPath();
     ctx.arc(cx, cy, R, startAngle, endAngle);
     ctx.lineWidth = 18;
@@ -44,11 +29,9 @@ const Speedometer = ({ value, max = 1, label }) => {
     ctx.lineCap = 'round';
     ctx.stroke();
 
-    // Colored value arc
     const pct = Math.min(value / max, 1);
     const valAngle = startAngle + totalAngle * pct;
 
-    // Gradient: green → yellow → red
     const grad = ctx.createLinearGradient(cx - R, cy, cx + R, cy);
     grad.addColorStop(0, '#3cb96a');
     grad.addColorStop(0.5, '#f0c040');
@@ -61,7 +44,6 @@ const Speedometer = ({ value, max = 1, label }) => {
     ctx.lineCap = 'round';
     ctx.stroke();
 
-    // Tick marks
     for (let i = 0; i <= 10; i++) {
       const angle = startAngle + (totalAngle / 10) * i;
       const innerR = R - 26;
@@ -74,45 +56,36 @@ const Speedometer = ({ value, max = 1, label }) => {
       ctx.stroke();
     }
 
-    // Needle
     const needleAngle = startAngle + totalAngle * pct;
     const needleLen = R - 28;
     ctx.beginPath();
     ctx.moveTo(cx, cy);
-    ctx.lineTo(
-      cx + needleLen * Math.cos(needleAngle),
-      cy + needleLen * Math.sin(needleAngle)
-    );
+    ctx.lineTo(cx + needleLen * Math.cos(needleAngle), cy + needleLen * Math.sin(needleAngle));
     ctx.strokeStyle = '#1a6b3a';
     ctx.lineWidth = 3;
     ctx.lineCap = 'round';
     ctx.stroke();
 
-    // Center dot
     ctx.beginPath();
     ctx.arc(cx, cy, 7, 0, Math.PI * 2);
     ctx.fillStyle = '#1a8c45';
     ctx.fill();
 
-    // Value text
     ctx.fillStyle = '#1c4a2a';
     ctx.font = "bold 22px 'DM Sans', sans-serif";
     ctx.textAlign = 'center';
     ctx.fillText((value * 100).toFixed(1) + '%', cx, cy - 18);
 
-    // Label
     ctx.fillStyle = '#8cbd9a';
     ctx.font = "11px 'DM Mono', monospace";
     ctx.fillText(label.toUpperCase(), cx, cy + 22);
 
-    // Min / Max labels
     ctx.fillStyle = '#8cbd9a';
     ctx.font = "10px 'DM Mono', monospace";
     ctx.textAlign = 'left';
     ctx.fillText('0%', cx - R - 4, cy + 6);
     ctx.textAlign = 'right';
     ctx.fillText('100%', cx + R + 4, cy + 6);
-
   }, [value]);
 
   return <canvas ref={canvasRef} width={260} height={160} style={{ width: '100%' }} />;
@@ -217,7 +190,27 @@ const RatioBar = ({ label, value }) => {
 
 // ── Main Page ──
 const ResultPage = () => {
-  const d = devData;
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // ✅ Read data passed from Home page via navigate state
+  const d = location.state?.result;
+
+  // ── No data: user landed here directly without analyzing ──
+  if (!d) {
+    return (
+      <div className="dashboard-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '16px' }}>
+        <p style={{ fontSize: '18px', color: '#1a8c45' }}>No data found.</p>
+        <p style={{ fontSize: '14px', color: '#888' }}>Please analyze a repository first.</p>
+        <button
+          onClick={() => navigate('/')}
+          style={{ padding: '10px 24px', background: '#1a8c45', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' }}
+        >
+          ← Go Back Home
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-container">
@@ -226,7 +219,7 @@ const ResultPage = () => {
       <nav className="navbar">
         <div className="logo">Commit DNA</div>
         <div className="nav-links">
-          <button>Home</button>
+          <button onClick={() => navigate('/')}>Home</button>
           <button className="active">Dashboard</button>
           <button>About</button>
         </div>
@@ -263,8 +256,6 @@ const ResultPage = () => {
 
       {/* ── Middle Row: Speedometer + Ratio Bars ── */}
       <div className="middle-grid">
-
-        {/* Speedometer */}
         <div className="sub-card center-card">
           <h3>Bug Rate Meter</h3>
           <Speedometer value={d.bugRate} max={1} label="Bug Rate" />
@@ -275,7 +266,6 @@ const ResultPage = () => {
           </p>
         </div>
 
-        {/* Ratio Bars */}
         <div className="sub-card">
           <h3>Behavioral Ratios</h3>
           <div className="ratios-list">
@@ -292,9 +282,9 @@ const ResultPage = () => {
       <div className="bottom-grid">
         <div className="sub-card">
           <h3>Primary Dev Language</h3>
-          <span className="highlight-text">{d.primaryLanguage}</span>
-          <p>Focus Area: <strong>{d.focusArea}</strong></p>
-          <p>Code Velocity: <span className="velocity-badge">{d.codeVelocity}</span></p>
+          <span className="highlight-text">{d.primaryLanguage ?? 'N/A'}</span>
+          <p>Focus Area: <strong>{d.focusArea ?? 'N/A'}</strong></p>
+          <p>Code Velocity: <span className="velocity-badge">{d.codeVelocity ?? 'N/A'}</span></p>
         </div>
 
         <div className="sub-card">
