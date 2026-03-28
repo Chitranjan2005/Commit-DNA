@@ -17,7 +17,7 @@
 
 //         // numstat lines follow the header
 //         let additions = 0;
-//         let deletions = 0;
+        // let deletions = 0;
 
 //         for (let i = 1; i < lines.length; i++) {
 //             const statLine = lines[i].trim();
