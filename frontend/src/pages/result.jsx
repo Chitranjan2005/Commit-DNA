@@ -2,299 +2,224 @@ import React, { useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './result.css';
 
-// ── Speedometer Component ──
-const Speedometer = ({ value, max = 1, label }) => {
+// ── Speedometer (Fixed for Bug Rate Logic) ──
+const Speedometer = ({ value = 0 }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    const W = canvas.width;
-    const H = canvas.height;
-    const cx = W / 2;
-    const cy = H - 30;
-    const R = Math.min(W, H * 2) / 2 - 20;
 
-    ctx.clearRect(0, 0, W, H);
+    const draw = (val) => {
+      const W = canvas.width;
+      const H = canvas.height;
+      const cx = W / 2;
+      const cy = H - 10;
+      const R = 110;
 
-    const startAngle = Math.PI;
-    const endAngle = 2 * Math.PI;
-    const totalAngle = endAngle - startAngle;
+      ctx.clearRect(0, 0, W, H);
 
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, startAngle, endAngle);
-    ctx.lineWidth = 18;
-    ctx.strokeStyle = '#d4ead9';
-    ctx.lineCap = 'round';
-    ctx.stroke();
-
-    const pct = Math.min(value / max, 1);
-    const valAngle = startAngle + totalAngle * pct;
-
-    const grad = ctx.createLinearGradient(cx - R, cy, cx + R, cy);
-    grad.addColorStop(0, '#3cb96a');
-    grad.addColorStop(0.5, '#f0c040');
-    grad.addColorStop(1, '#e84040');
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, startAngle, valAngle);
-    ctx.lineWidth = 18;
-    ctx.strokeStyle = grad;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-
-    for (let i = 0; i <= 10; i++) {
-      const angle = startAngle + (totalAngle / 10) * i;
-      const innerR = R - 26;
-      const outerR = R - 14;
+      // 1. Background Track
       ctx.beginPath();
-      ctx.moveTo(cx + innerR * Math.cos(angle), cy + innerR * Math.sin(angle));
-      ctx.lineTo(cx + outerR * Math.cos(angle), cy + outerR * Math.sin(angle));
-      ctx.strokeStyle = '#8cbd9a';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-    }
-
-    const needleAngle = startAngle + totalAngle * pct;
-    const needleLen = R - 28;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(cx + needleLen * Math.cos(needleAngle), cy + needleLen * Math.sin(needleAngle));
-    ctx.strokeStyle = '#1a6b3a';
-    ctx.lineWidth = 3;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, 7, 0, Math.PI * 2);
-    ctx.fillStyle = '#1a8c45';
-    ctx.fill();
-
-    ctx.fillStyle = '#1c4a2a';
-    ctx.font = "bold 22px 'DM Sans', sans-serif";
-    ctx.textAlign = 'center';
-    ctx.fillText((value * 100).toFixed(1) + '%', cx, cy - 18);
-
-    ctx.fillStyle = '#8cbd9a';
-    ctx.font = "11px 'DM Mono', monospace";
-    ctx.fillText(label.toUpperCase(), cx, cy + 22);
-
-    ctx.fillStyle = '#8cbd9a';
-    ctx.font = "10px 'DM Mono', monospace";
-    ctx.textAlign = 'left';
-    ctx.fillText('0%', cx - R - 4, cy + 6);
-    ctx.textAlign = 'right';
-    ctx.fillText('100%', cx + R + 4, cy + 6);
-  }, [value]);
-
-  return <canvas ref={canvasRef} width={260} height={160} style={{ width: '100%' }} />;
-};
-
-// ── Mini Activity Chart ──
-const MiniChart = () => {
-  const canvasRef = useRef(null);
-  const daily = [4, 7, 3, 9, 5, 12, 8, 6, 10, 4, 7, 11, 3, 9];
-  const weekly = [22, 38, 30, 45, 28, 50, 35];
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const W = canvas.width;
-    const H = canvas.height;
-    const pad = 20;
-
-    ctx.clearRect(0, 0, W, H);
-
-    ctx.strokeStyle = '#c8e6ce';
-    ctx.lineWidth = 1;
-    for (let i = 0; i <= 4; i++) {
-      const y = pad + ((H - pad * 2) / 4) * i;
-      ctx.beginPath();
-      ctx.moveTo(pad, y);
-      ctx.lineTo(W - pad, y);
-      ctx.stroke();
-    }
-
-    const drawLine = (points, color, fillTop, fillBot) => {
-      const xStep = (W - pad * 2) / (points.length - 1);
-      const maxVal = Math.max(...points);
-      const coords = points.map((v, i) => ({
-        x: pad + i * xStep,
-        y: H - pad - (v / maxVal) * (H - pad * 2),
-      }));
-
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 2.5;
-      ctx.lineJoin = 'round';
-      ctx.beginPath();
-      coords.forEach((pt, i) => (i === 0 ? ctx.moveTo(pt.x, pt.y) : ctx.lineTo(pt.x, pt.y)));
+      ctx.arc(cx, cy, R, Math.PI, 2 * Math.PI);
+      ctx.lineWidth = 12;
+      ctx.strokeStyle = '#111';
       ctx.stroke();
 
-      const grad = ctx.createLinearGradient(0, pad, 0, H - pad);
-      grad.addColorStop(0, fillTop);
-      grad.addColorStop(1, fillBot);
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.moveTo(coords[0].x, H - pad);
-      coords.forEach((pt) => ctx.lineTo(pt.x, pt.y));
-      ctx.lineTo(coords[coords.length - 1].x, H - pad);
-      ctx.closePath();
-      ctx.fill();
+      // 2. Logic: Red if bugRate > 30%, else Neon Green
+      const isCritical = val > 0.3;
+      const glowColor = isCritical ? '#ff4d4d' : '#4ade80';
 
-      ctx.fillStyle = color;
-      coords.forEach((pt) => {
-        ctx.beginPath();
-        ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2);
-        ctx.fill();
-      });
+      const gradient = ctx.createLinearGradient(cx - R, cy, cx + R, cy);
+      if (isCritical) {
+        gradient.addColorStop(0, '#7f1d1d'); // Dark Red
+        gradient.addColorStop(1, '#ff4d4d'); // Bright Neon Red
+      } else {
+        gradient.addColorStop(0, '#16a34a'); // Deep Emerald
+        gradient.addColorStop(1, '#bef264'); // Yellow-Green
+      }
+
+      // 3. Glowing Progress Bar
+      const pct = Math.min(val, 1);
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, Math.PI, Math.PI + Math.PI * pct);
+
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = glowColor;
+      ctx.lineWidth = 12;
+      ctx.strokeStyle = gradient;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ffffff';
+      ctx.font = "600 32px 'Inter'";
+      ctx.textAlign = 'center';
+      ctx.fillText((val * 100).toFixed(1) + '%', cx, cy - 40);
     };
 
-    const expanded = daily.map((_, i) => {
-      const wIdx = Math.floor((i / daily.length) * weekly.length);
-      return weekly[Math.min(wIdx, weekly.length - 1)] / 3;
-    });
+    let start = null;
+    const animate = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / 1000, 1);
+      draw(progress * value);
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [value]);
 
-    drawLine(expanded, '#7bbf8e', '#a8d5b555', '#a8d5b500');
-    drawLine(daily, '#1a8c45', '#3cb96a44', '#3cb96a00');
+  return <canvas ref={canvasRef} width={300} height={160} style={{ width: '100%' }} />;
+};
 
-    ctx.font = "10px 'DM Mono', monospace";
-    ctx.fillStyle = '#1a8c45';
-    ctx.fillText('● Daily', W - 115, 14);
-    ctx.fillStyle = '#7bbf8e';
-    ctx.fillText('● Weekly', W - 65, 14);
+// ── Activity Chart (Dual-Line Neon Propagation) ──
+const MiniChart = () => {
+  const canvasRef = useRef(null);
+
+  const dailyData = [20, 45, 28, 80, 40, 95, 60, 88, 70, 92];
+  const weeklyData = [30, 35, 40, 55, 50, 65, 60, 75, 72, 80];
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let frame;
+    let offset = 0;
+
+    const render = () => {
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const drawLine = (data, color, width, glowSize, isDashed = false) => {
+        ctx.beginPath();
+        ctx.setLineDash(isDashed ? [5, 5] : []);
+        ctx.shadowBlur = glowSize;
+        ctx.shadowColor = color;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+
+        const xStep = W / (data.length - 1);
+        data.forEach((v, i) => {
+          const x = i * xStep;
+          // Sine wave "breathing" animation
+          const y = (H - (v / 100) * H) + Math.sin(offset + i) * 3;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+      };
+
+      // 1. Weekly (Subtle Background)
+      drawLine(weeklyData, '#166534', 2, 0, true);
+      // 2. Daily (Bright Neon)
+      drawLine(dailyData, '#4ade80', 3, 15, false);
+
+      offset += 0.05;
+      frame = requestAnimationFrame(render);
+    };
+
+    render();
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   return (
-    <canvas ref={canvasRef} width={500} height={130}
-      style={{ width: '100%', height: '100%', display: 'block' }} />
-  );
-};
-
-// ── Ratio Bar ──
-const RatioBar = ({ label, value }) => {
-  const pct = Math.round(value * 100);
-  return (
-    <div className="ratio-bar-wrap">
-      <div className="ratio-bar-header">
-        <span className="ratio-label">{label}</span>
-        <span className="ratio-value">{pct}%</span>
-      </div>
-      <div className="ratio-track">
-        <div className="ratio-fill" style={{ width: `${pct}%` }} />
+    <div style={{ position: 'relative' }}>
+      <canvas ref={canvasRef} width={800} height={200} style={{ width: '100%', height: 'auto' }} />
+      <div style={{ display: 'flex', gap: '20px', marginTop: '12px', fontFamily: 'JetBrains Mono', fontSize: '10px', color: '#666' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ width: '12px', height: '3px', background: '#4ade80', boxShadow: '0 0 5px #4ade80' }}></div>
+          DAILY PROPAGATION
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ width: '12px', height: '2px', border: '1px dashed #166534' }}></div>
+          WEEKLY TREND
+        </div>
       </div>
     </div>
   );
 };
 
-// ── Main Page ──
+const RatioBar = ({ label, value }) => (
+  <div className="ratio-bar-wrap">
+    <div className="ratio-bar-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <span className="ratio-label">{label}</span>
+      <span className="ratio-value">{(value * 100).toFixed(1)}%</span>
+    </div>
+    <div className="ratio-track">
+      <div className="ratio-fill" style={{ width: `${value * 100}%` }} />
+    </div>
+  </div>
+);
+
 const ResultPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
-  // ✅ Read data passed from Home page via navigate state
   const d = location.state?.result;
 
-  // ── No data: user landed here directly without analyzing ──
-  if (!d) {
-    return (
-      <div className="dashboard-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', gap: '16px' }}>
-        <p style={{ fontSize: '18px', color: '#1a8c45' }}>No data found.</p>
-        <p style={{ fontSize: '14px', color: '#888' }}>Please analyze a repository first.</p>
-        <button
-          onClick={() => navigate('/')}
-          style={{ padding: '10px 24px', background: '#1a8c45', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' }}
-        >
-          ← Go Back Home
-        </button>
-      </div>
-    );
-  }
+  if (!d) return <div className="dashboard-container" style={{ color: '#fff' }}>Analyzing DNA...</div>;
 
   return (
     <div className="dashboard-container">
-
-      {/* Navbar */}
       <nav className="navbar">
-        <div className="logo">Commit DNA</div>
+        <div className="logo">COMMIT <span>DNA</span></div>
         <div className="nav-links">
-          <button onClick={() => navigate('/')}>Home</button>
-          <button className="active">Dashboard</button>
-          <button>About</button>
+          <button onClick={() => navigate('/')}>RESCAN</button>
+          <button className="active">DASHBOARD</button>
         </div>
       </nav>
 
-      {/* ── Top Main Card ── */}
       <div className="main-card">
-        <p className="card-header">Developer DNA Core: Insights & Activity</p>
-
-        <div className="stats-grid">
-          {/* Profile */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div className="profile-info">
+            <span className="sub-label">DEVELOPER IDENTITY</span>
             <h1>{d.developerName}</h1>
-            <p className="sub-label">Developer Name</p>
-            <div className="total-commits">{d.totalCommits}</div>
-            <p className="sub-label">Total Commits</p>
           </div>
-
-          {/* Commit Behavior */}
-          <div className="commit-behavior">
-            <h3>Commit Behavior</h3>
-            <div className="behavior-grid">
-              <div className="stat-item"><span>Bug Rate:</span><strong>{(d.bugRate * 100).toFixed(1)}%</strong></div>
-              <div className="stat-item"><span>Refactor Rate:</span><strong>{(d.refactorRate * 100).toFixed(1)}%</strong></div>
-              <div className="stat-item"><span>Night Ratio:</span><strong>{(d.nightRatio * 100).toFixed(1)}%</strong></div>
-              <div className="stat-item"><span>Weekend Ratio:</span><strong>{(d.weekendRatio * 100).toFixed(1)}%</strong></div>
-              <div className="stat-item"><span>Commit Spike:</span><strong>{(d.commitSpike * 100).toFixed(1)}%</strong></div>
-              <div className="stat-item"><span>Total Commits:</span><strong>{d.totalCommits}</strong></div>
-            </div>
-            <div className="weekend-tag">Weekend Coding ({(d.weekendRatio * 100).toFixed(1)}%)</div>
+          <div style={{ textAlign: 'right' }}>
+            <span className="sub-label">TOTAL COMMITS</span>
+            <div className="total-commits">{d.totalCommits}</div>
           </div>
         </div>
       </div>
 
-      {/* ── Middle Row: Speedometer + Ratio Bars ── */}
-      <div className="middle-grid">
-        <div className="sub-card center-card">
-          <h3>Bug Rate Meter</h3>
-          <Speedometer value={d.bugRate} max={1} label="Bug Rate" />
-          <p className="meter-note">
-            {d.bugRate < 0.1 ? '✅ Excellent — very low bug rate' :
-             d.bugRate < 0.25 ? '⚠️ Moderate — keep an eye on bugs' :
-             '🔴 High — needs attention'}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '20px' }}>
+
+        <div className="sub-card">
+          <h3>BUG RATE</h3>
+          <Speedometer value={d.bugRate} />
+          <p className="meter-note" style={{ color: d.bugRate > 0.3 ? '#ff4d4d' : '#4ade80' }}>
+            {d.bugRate > 0.3 ? 'CRITICAL VULNERABILITY' : 'SYSTEM STABLE'}
           </p>
         </div>
 
         <div className="sub-card">
-          <h3>Behavioral Ratios</h3>
-          <div className="ratios-list">
-            <RatioBar label="Night Coding Ratio" value={d.nightRatio} />
-            <RatioBar label="Weekend Ratio" value={d.weekendRatio} />
-            <RatioBar label="Bug Rate" value={d.bugRate} />
-            <RatioBar label="Refactor Rate" value={d.refactorRate} />
-            <RatioBar label="Commit Spike" value={d.commitSpike} />
+          <h3>CODE DYNAMICS</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginTop: '10px' }}>
+            <div>
+              <RatioBar label="Night Velocity" value={d.nightRatio} />
+              <RatioBar label="Weekend Momentum" value={d.weekendRatio} />
+            </div>
+            <div>
+              <RatioBar label="Refactor Rate" value={d.refactorRate} />
+              <RatioBar label="Stability" value={1 - d.bugRate} />
+            </div>
           </div>
-        </div>
-      </div>
-
-      {/* ── Bottom Row ── */}
-      <div className="bottom-grid">
-        <div className="sub-card">
-          <h3>Primary Dev Language</h3>
-          <span className="highlight-text">{d.primaryLanguage ?? 'N/A'}</span>
-          <p>Focus Area: <strong>{d.focusArea ?? 'N/A'}</strong></p>
-          <p>Code Velocity: <span className="velocity-badge">{d.codeVelocity ?? 'N/A'}</span></p>
         </div>
 
         <div className="sub-card">
-          <h3>Recent Activity Trend</h3>
-          <div style={{ height: '130px', marginTop: '12px' }}>
-            <MiniChart />
+          <h3>Primary Stack</h3>
+          <span className="highlight-text">{d.primaryLanguage || 'UNKNOWN'}</span>
+          <div style={{ marginTop: '20px' }}>
+            <span className="velocity-badge">{d.codeVelocity || 'N/A'} VELOCITY</span>
           </div>
         </div>
-      </div>
 
+        <div className="sub-card">
+          <h3>Commit Propagation</h3>
+          <MiniChart />
+        </div>
+
+      </div>
     </div>
   );
 };

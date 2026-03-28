@@ -6,7 +6,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav>
+    <nav >
       <div className="nav-container">
         <div className="nav-logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
           🧬 Commit DNA
@@ -18,9 +18,6 @@ const Navbar = () => {
           <Link to="/about">About</Link>
         </div>
 
-        <button className="nav-analyze-btn" onClick={() => navigate('/')}>
-          Analyze Repo
-        </button>
       </div>
     </nav>
   );
