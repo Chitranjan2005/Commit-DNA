@@ -7,7 +7,7 @@ const containsKeyword = (text, keywords) => {
 };
 
 const calculateMetrics = (commits, developerName = null) => {
-    // --- NEW: If a specific developer was requested, keep only their commits ---
+    
     if (developerName) {
         commits = commits.filter(
             c => c.author.toLowerCase() === developerName.toLowerCase()

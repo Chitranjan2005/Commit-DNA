@@ -1,7 +1,7 @@
 const { cloneRepo, deleteRepo } = require("../services/git.service");
 const simpleGit = require("simple-git");
 const { calculateMetrics } = require("../services/metricsService");
-const { calculateBurnout } = require("../services/burnoutService");
+const { calculateBurnout } = require("../services/burnoutservice");
 const dayjs = require("dayjs");
 
 // Overall request timeout (60 seconds)
