@@ -6,14 +6,14 @@ const analyzeRoutes = require("./routes/analyze.routes");
 const app = express();
 
 app.use(cors({
-  origin: "https://your-vercel-app.vercel.app"
+  origin: 'https://commit-dna-lkc9.vercel.app', 
 }));
 app.use(express.json());
 
 app.use("/api", analyzeRoutes);
 
-// app.get("/", (req, res) => {
-//   res.send("Commit DNA Backend Running 🚀");
-// });
+app.get("/", (req, res) => {
+  res.send("Commit DNA Backend Running 🚀");
+});
 
 module.exports = app;
