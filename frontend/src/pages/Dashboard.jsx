@@ -353,12 +353,12 @@ const Dashboard = () => {
     setLoading(true);
     try {
       const [analyzeRes, burnoutRes] = await Promise.all([
-        fetch('https://commit-dna-2.onrender.com/api/analyze', {
+        fetch('https://commit-dna-3.onrender.com/api/analyze', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ repoUrl }),
         }),
-        fetch('https://commit-dna-2.onrender.com/api/burnout', {
+        fetch('https://commit-dna-3.onrender.com/api/burnout', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ repoUrl }),
