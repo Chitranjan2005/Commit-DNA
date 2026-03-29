@@ -1,178 +1,659 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800;900&family=Barlow:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;700&family=Barlow:wght@400;500&display=swap');
 
-.editorial-dna-dashboard {
-    background-color: #000000;
-    /* Dark background like image 1 */
-    min-height: 100vh;
-    color: #ffffff;
-    font-family: 'Barlow', sans-serif;
-    overflow-x: hidden;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
+/* ── Root ── */
+.about-root {
+  background: #000;
+  color: #fff;
+  font-family: 'Barlow', sans-serif;
+  overflow-x: hidden;
+  opacity: 0;
+  transition: opacity 0.8s ease;
 }
 
-.hl-visible {
-    opacity: 1;
+.about-visible {
+  opacity: 1;
 }
 
-.editorial-main-dna {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 5%;
+.about-section-inner {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 48px;
 }
 
-/* --- Hero Section - Title & DNA Helix --- */
-.hl-hero-section-dna {
-    position: relative;
-    height: 85vh;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    /* Title on Left, DNA on Right */
-    align-items: center;
-    border-bottom: 1.5px solid #222;
-    /* Light divider */
+/* ── Shared typography ── */
+.about-eyebrow {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: #adf822;
+  margin-bottom: 16px;
 }
 
-.hero-typography-dna {
-    position: relative;
-    z-index: 2;
-    text-align: left;
-    /* Left align like Image 3 idea but in Image 1 style */
+.about-section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: #fff;
+  margin: 0 0 40px;
 }
 
-.hero-main-title-dna {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: clamp(5rem, 15vw, 13rem);
-    text-transform: uppercase;
-    letter-spacing: -6px;
-    line-height: 0.9;
-    margin: 0;
+.about-body-text {
+  font-size: 1.05rem;
+  line-height: 1.78;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 20px;
 }
 
-.metallic-text-dna {
-    color: #1a3a1f;
-    /* Dark Metallic Green base */
-    background: linear-gradient(135deg, #1a3a1f 0%, #a3c9a8 50%, #1a3a1f 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.about-body-text strong {
+  color: #adf822;
+  font-weight: 600;
 }
 
-.green-metallic-outline-dna {
-    display: block;
-    color: transparent;
-    -webkit-text-stroke: 2px #4cbb17;
-    /* Parrot Green */
+.about-section-header {
+  margin-bottom: 48px;
 }
 
-.hero-subtitle-dna {
-    color: rgba(255, 255, 255, 0.5);
-    /* Muted contrast label */
-    font-size: 1.2rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-top: 10px;
+/* ── HERO ── */
+.about-hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 48px 80px;
+  max-width: 1260px;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
-/* Redesigned Metallic DNA Helix Visual */
-.dna-helix-metallic-visual {
-    font-size: 28rem;
-    transform: rotate(-10deg);
-    color: transparent;
-    filter: drop-shadow(0 0 15px rgba(76, 187, 23, 0.3));
-    /* Neon glow */
-
-    /* Strong linear animation with color stroke */
-    background: linear-gradient(110deg, transparent 0%, transparent 20%, rgba(76, 187, 23, 0.6) 50%, transparent 80%, transparent 100%);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    -webkit-text-stroke: 1.5px #4cbb17;
-    /* Parrot Green outline */
-
-    animation: shine-dna 4s infinite linear;
-    pointer-events: none;
-    z-index: 1;
+.about-hero-bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(173, 248, 34, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(173, 248, 34, 0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
 }
 
-@keyframes shine-dna {
-    to {
-        background-position: 200% 0;
-    }
+.about-hero-inner {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-/* --- Content Grid - Pure Editorial Typography --- */
-.editorial-content-grid-dna {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr 1.5fr;
-    gap: 60px;
-    padding: 100px 0;
-    border-bottom: 1px solid #222;
+.about-hero-in {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* Vertical Philosophy Label (Image 3 style) */
-.label-col-vertical-dna {
-    position: relative;
-    writing-mode: vertical-rl;
-    /* Text is vertical */
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
+.about-hero-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(4.5rem, 11vw, 10rem);
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  margin: 16px 0 28px;
 }
 
-.label-vertical-dna {
-    font-family: 'Barlow Condensed';
-    font-size: 1.1rem;
-    letter-spacing: 4px;
-    color: #4cbb17;
-    margin: 0;
-    line-height: 1;
+.about-hero-line1 {
+  display: block;
+  color: rgba(255, 255, 255, 0.18);
 }
 
-.section-title-brief-dna {
-    font-family: 'Barlow Condensed';
-    font-size: 3rem;
-    color: #ffffff;
-    font-weight: 800;
-    margin-top: 20px;
+.about-hero-line2 {
+  display: block;
+  color: #fff;
 }
 
-/* Paragraph Data - Darker White per image 1 style */
-.editorial-para-dna {
-    color: rgba(255, 255, 255, 0.7);
-    /* Muted contrast for readability */
-    line-height: 1.7;
-    font-size: 1.1rem;
-    text-align: justify;
-    margin-bottom: 30px;
+.about-hero-line3 {
+  display: block;
+  color: #fff;
 }
 
-/* Responsive adjustments */
-@media (max-width: 900px) {
-    .editorial-content-grid-dna {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
+.about-hero-dot {
+  color: #adf822;
+  text-shadow: 0 0 30px rgba(173, 248, 34, 0.6);
+}
 
-    .hl-hero-section-dna {
-        grid-template-columns: 1fr;
-        justify-content: center;
-        text-align: center;
-    }
+.about-hero-sub {
+  max-width: 480px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.4);
+}
 
-    .hero-main-title-dna {
-        letter-spacing: -3px;
-    }
+/* ── DNA helix (right side) ── */
+.about-hero-dna {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 20px;
+  z-index: 1;
+  opacity: 0.7;
+}
 
-    .dna-helix-metallic-visual {
-        font-size: 15rem;
-        margin-top: 40px;
-    }
+.dna-pair {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  animation: dnaPairFade 3s ease-in-out infinite;
+}
 
-    .hero-typography-dna {
-        text-align: center;
-    }
+@keyframes dnaPairFade {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 1; }
+}
 
-    .green-metallic-outline-dna {
-        text-align: center;
-    }
+.dna-node {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #adf822;
+  box-shadow: 0 0 8px rgba(173, 248, 34, 0.6);
+  flex-shrink: 0;
+  animation: dnaNodePulse 3s ease-in-out infinite;
+}
+
+@keyframes dnaNodePulse {
+  0%, 100% { transform: scale(0.7); opacity: 0.4; }
+  50%       { transform: scale(1.1); opacity: 1; }
+}
+
+.dna-bridge {
+  flex: 1;
+  width: 80px;
+  height: 1.5px;
+  background: linear-gradient(90deg, #adf822, rgba(173, 248, 34, 0.1), #adf822);
+  animation: dnaBridgeFade 3s ease-in-out infinite;
+}
+
+@keyframes dnaBridgeFade {
+  0%, 100% { opacity: 0.15; }
+  50%       { opacity: 0.5; }
+}
+
+/* ── STATS ── */
+.about-stats-section {
+  padding: 64px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.about-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.about-stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 36px 32px;
+  background: #050505;
+  transition: background 0.2s;
+}
+
+.about-stat-card:hover {
+  background: rgba(173, 248, 34, 0.03);
+}
+
+.about-stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #adf822;
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 30px rgba(173, 248, 34, 0.3);
+  line-height: 1;
+}
+
+.about-stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #444;
+  text-transform: uppercase;
+}
+
+/* ── MISSION ── */
+.about-mission-section {
+  padding: 120px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.about-mission-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.about-mission-label {
+  padding-top: 8px;
+}
+
+.about-vertical-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: #adf822;
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+}
+
+.about-mission-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.about-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(173, 248, 34, 0.2);
+  background: rgba(173, 248, 34, 0.05);
+  color: #adf822;
+}
+
+/* ── HOW IT WORKS ── */
+.about-how-section {
+  padding: 120px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.tl-step {
+  padding: 32px 28px;
+  background: #050505;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease, background 0.2s;
+}
+
+.tl-step-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tl-step:hover {
+  background: rgba(173, 248, 34, 0.03);
+}
+
+.tl-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: rgba(173, 248, 34, 0.2);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.tl-line {
+  width: 24px;
+  height: 1.5px;
+  background: rgba(173, 248, 34, 0.3);
+  border-radius: 2px;
+}
+
+.tl-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.tl-desc {
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+/* ── METRICS ── */
+.about-metrics-section {
+  padding: 120px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.metrics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.metric-row {
+  display: grid;
+  grid-template-columns: 260px 1fr 220px;
+  gap: 32px;
+  align-items: center;
+  padding: 24px 28px;
+  background: #050505;
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: opacity 0.5s ease, transform 0.5s ease, background 0.2s;
+}
+
+.metric-row-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.metric-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.metric-row-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.metric-emoji {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.metric-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+}
+
+.metric-formula {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #adf822;
+  letter-spacing: 0.04em;
+  background: rgba(173, 248, 34, 0.06);
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.metric-desc {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+}
+
+.metric-thresholds {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.metric-threshold {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--tc, #aaa);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, var(--tc), transparent 70%);
+  background: color-mix(in srgb, var(--tc), transparent 92%);
+  white-space: nowrap;
+}
+
+/* ── BURNOUT FORMULA ── */
+.about-formula-section {
+  padding: 120px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.formula-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.formula-block {
+  background: rgba(10, 10, 10, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 36px 40px;
+}
+
+.formula-code {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formula-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.formula-indent {
+  padding-left: 24px;
+}
+
+.formula-kw {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.formula-op {
+  color: #444;
+}
+
+.formula-weight {
+  color: #adf822;
+  font-weight: 700;
+}
+
+.formula-var {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.formula-thresholds {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.formula-threshold-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 24px;
+  background: rgba(10, 10, 10, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border-left: 3px solid var(--fc, #aaa);
+  transition: background 0.2s;
+}
+
+.formula-threshold-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ftc-range {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #444;
+  margin: 0 0 4px;
+}
+
+.ftc-status {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.ftc-desc {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0;
+}
+
+/* ── STACK ── */
+.about-stack-section {
+  padding: 120px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.stack-card {
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 32px;
+  transition: border-color 0.3s, background 0.2s;
+}
+
+.stack-card:hover {
+  border-color: rgba(173, 248, 34, 0.2);
+  background: rgba(173, 248, 34, 0.02);
+}
+
+.stack-layer {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #adf822;
+  text-transform: uppercase;
+  margin: 0 0 20px;
+}
+
+.stack-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stack-items li {
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.5);
+  padding-left: 16px;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.stack-items li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 1.5px;
+  background: #adf822;
+  opacity: 0.4;
+}
+
+.stack-card:hover .stack-items li {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .tl-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .formula-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .stack-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .metric-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    padding: 120px 24px 60px;
+    flex-direction: column;
+  }
+
+  .about-hero-dna {
+    display: none;
+  }
+
+  .about-section-inner {
+    padding: 0 24px;
+  }
+
+  .about-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tl-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stack-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-mission-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .about-vertical-label {
+    writing-mode: horizontal-tb;
+  }
 }

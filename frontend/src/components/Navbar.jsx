@@ -54,14 +54,15 @@ const Navbar = () => {
             LIVE
           </div>
 
-          <Link to="/" className="nav-analyze-btn">
+          {/* <Link to="/" className="nav-analyze-btn">
             Analyze →
-          </Link>
+          </Link> */}
         </div>
 
       </div>
     </nav>
   );
 };
+// to="/dashboard" className={path === '/dashboard' || path === '/result' ? 'active' : ''}
 
 export default Navbar;
